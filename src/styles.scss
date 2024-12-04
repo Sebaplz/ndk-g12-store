@@ -1,3 +1,4 @@
+
 * {
   font-size: clamp(12px, 2.5vw, 14px);
 }
@@ -21,6 +22,6 @@ body.no-scroll {
   overflow: hidden;
 }
 
-.pantalla-completa {
+.fullscreen {
   min-height: 100dvh !important;
 }

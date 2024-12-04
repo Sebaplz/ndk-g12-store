@@ -1,0 +1,49 @@
+<div class="fullscreen  w-full flex justify-content-center align-items-center">
+  <div class="login-layout surface-card p-4 shadow-2 border-round w-full lg:w-6">
+    <div class="text-center mb-5">
+      <img src="https://victecode.com/wp-content/uploads/2024/03/tienda-virtual-servicio.png" alt="Logo" class="login-image">
+      <div class="text-900 text-3xl font-medium mb-3">Ndk G12 Store</div>
+      <span class="text-600 font-medium line-height-3">¿No tienes una cuenta?</span>
+      <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">¡crea una ahora!</a>
+    </div>
+
+    <form class="flex flex-column gap-4 pt-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="w-full flex flex-column">
+        <p-floatLabel>
+          <input id="correo" type="text" pInputText class="w-full"
+                 formControlName="email"
+                 [class.ng-invalid]="loginForm.controls.email.errors"
+                 [class.ng-dirty]="loginForm.controls.email.dirty"
+          >
+          <label for="correo" class="block text-900 font-medium">Correo electronico</label>
+        </p-floatLabel>
+        @if         (loginForm.controls.email.errors?.['required'] && loginForm.controls.email.dirty) {
+
+          <small class="text-red-700 ml-3 mt-1">El correo es requerido</small>
+
+        } @else if  (loginForm.controls.email.errors?.['email'] && loginForm.controls.email.dirty){
+
+          <small class="text-red-700 ml-3 mt-1">El correo no es valido</small>
+
+        }
+      </div>
+      <div class="w-full flex flex-column">
+        <p-floatLabel>
+          <input id="clave" type="password" pInputText class="w-full">
+          <label for="clave" class="block text-900 font-medium">Contraseña</label>
+        </p-floatLabel>
+
+      </div>
+
+      <div class="flex align-items-center justify-content-between mb-6">
+        <div class="flex align-items-center">
+          <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+          <label for="rememberme" class="text-900">Recordar</label>
+        </div>
+        <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Recuperar contraseña</a>
+      </div>
+
+      <button pButton pRipple label="Ingresar" icon="pi pi-user" class="w-full"></button>
+    </form>
+  </div>
+</div>
