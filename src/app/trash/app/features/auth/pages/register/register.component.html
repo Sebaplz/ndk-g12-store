@@ -1,0 +1,82 @@
+<main class="min-h-screen flex flex-col justify-content-center align-items-center">
+  <div class="card p-4 w-30rem">
+    <div class="flex flex-column md:flex-row">
+      <!-- Register Section -->
+      <div class="w-full md:w-5 flex flex-column align-items-center justify-content-center gap-3 py-5">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-column gap-4 w-full">
+          <div class="flex flex-wrap justify-content-center align-items-center gap-2">
+            <p-floatLabel>
+              <input
+                pInputText
+                id="email"
+                type="text"
+                class="w-12rem"
+                formControlName="email"
+              />
+              <label for="email">Email</label>
+            </p-floatLabel>
+            <small class="text-red-500 capitalize" *ngIf="registerForm.get('email')?.touched">
+              {{ getErrorMessage('email') }}
+            </small>
+          </div>
+          <div class="flex flex-wrap justify-content-center align-items-center gap-2">
+            <p-floatLabel>
+              <input
+                pInputText
+                id="password"
+                type="password"
+                class="w-12rem"
+                formControlName="password"
+              />
+              <label for="password">Password</label>
+            </p-floatLabel>
+            <small class="text-red-500 capitalize" *ngIf="registerForm.get('password')?.touched">
+              {{ getErrorMessage('password') }}
+            </small>
+          </div>
+          <div class="flex flex-wrap justify-content-center align-items-center gap-2">
+            <p-floatLabel>
+              <input
+                pInputText
+                id="confirmPassword"
+                type="password"
+                class="w-12rem"
+                formControlName="confirmPassword"
+              />
+              <label for="confirmPassword">Confirm Password</label>
+            </p-floatLabel>
+            <small class="text-red-500 capitalize" *ngIf="registerForm.get('confirmPassword')?.touched">
+              {{ getErrorMessage('confirmPassword') }}
+            </small>
+          </div>
+          <div class="flex justify-content-center align-items-center gap-2">
+            <p-button
+              type="submit"
+              label="Register"
+              icon="pi pi-user-plus"
+              styleClass="w-10rem mx-auto"
+              [disabled]="registerForm.invalid"/>
+          </div>
+          <small class="text-red-500" *ngIf="errorMessage">{{ errorMessage }}</small>
+        </form>
+      </div>
+
+      <!-- Divider Section -->
+      <div class="w-full md:w-2">
+        <p-divider layout="vertical" styleClass="hidden md:flex">
+          <b>OR</b>
+        </p-divider>
+        <p-divider layout="horizontal" styleClass="flex md:hidden" [align]="'center'">
+          <b>OR</b>
+        </p-divider>
+      </div>
+
+      <!-- Back Section -->
+      <div class="w-full md:w-5 flex align-items-center justify-content-center py-5">
+        <div class="flex flex-column gap-4 align-items-center">
+          <p-button routerLink="/" label="Back to home" icon="pi pi-home" styleClass="p-button-info w-12rem"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
