@@ -6,6 +6,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {CheckboxModule} from 'primeng/checkbox';
 import {Ripple} from 'primeng/ripple';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'login-page',
@@ -17,7 +18,8 @@ import {Ripple} from 'primeng/ripple';
     ReactiveFormsModule,
     CheckboxModule,
     ButtonDirective,
-    Ripple
+    Ripple,
+    RouterLink
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'

@@ -1,1 +1,72 @@
-<p>register-page works!</p>
+<div class="fullscreen w-full flex justify-content-center align-items-center">
+  <div class="login-layout surface-card p-4 shadow-2 border-round w-full lg:w-6">
+    <div class="text-center mb-5">
+      <img src="https://victecode.com/wp-content/uploads/2024/03/tienda-virtual-servicio.png" alt="Logo" class="login-image">
+      <div class="text-900 text-3xl font-medium mb-3">Ndk G12 Store</div>
+      <span class="text-600 font-medium line-height-3">¿Ya tienes una cuenta?</span>
+      <a routerLink="/auth/login" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">¡Inicia sesión ahora!</a>
+    </div>
+    <form class="flex flex-column gap-4 pt-4" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="flex flex-column justify-content-center align-items-center gap-5 pb-4">
+        <div class="w-full flex flex-column">
+          <p-floatLabel>
+            <input
+              id="email"
+              type="text"
+              pInputText
+              class="w-full"
+              formControlName="email"
+              [class.ng-invalid]="registerForm.controls.email.errors"
+              [class.ng-dirty]="registerForm.controls.email.dirty"
+            >
+            <label for="email" class="block text-900 font-medium">Correo electronico</label>
+          </p-floatLabel>
+          @if(registerForm.controls.email.errors?.['required'] && registerForm.controls.email.dirty) {
+            <small class="text-red-700 ml-3 mt-1">El correo es requerido</small>
+          }@else if(registerForm.controls.email.errors?.['email'] && registerForm.controls.email.dirty){
+            <small class="text-red-700 ml-3 mt-1">El correo no es valido</small>
+          }
+        </div>
+        <div class="w-full flex flex-column">
+          <p-floatLabel>
+            <input
+              id="password"
+              type="password"
+              pInputText
+              class="w-full"
+              formControlName="password"
+              [class.ng-invalid]="registerForm.controls.password.errors"
+              [class.ng-dirty]="registerForm.controls.password.dirty"
+            >
+            <label for="password" class="block text-900 font-medium">Contraseña</label>
+          </p-floatLabel>
+          @if(registerForm.controls.password.errors?.['required'] && registerForm.controls.password.dirty) {
+            <small class="text-red-700 ml-3 mt-1">La contraseña es requerida</small>
+          } @else if (registerForm.controls.password.errors?.['minlength'] && registerForm.controls.password.dirty) {
+            <small class="text-red-700 ml-3 mt-1">La contraseña debe tener al menos 6 caracteres</small>
+          } @else if (registerForm.controls.password.errors?.['maxlength'] && registerForm.controls.password.dirty) {
+            <small class="text-red-700 ml-3 mt-1">La contraseña debe tener como máximo 20 caracteres</small>
+          }
+        </div>
+        <div class="w-full flex flex-column">
+          <p-floatLabel>
+            <input
+              id="confirmPassword"
+              type="password"
+              pInputText
+              class="w-full"
+              formControlName="confirmPassword"
+              [class.ng-invalid]="registerForm.controls.confirmPassword.errors"
+              [class.ng-dirty]="registerForm.controls.confirmPassword.dirty"
+            >
+            <label for="confirmPassword" class="block text-900 font-medium">Confirmar Contraseña</label>
+          </p-floatLabel>
+          @if(registerForm.controls.confirmPassword.errors?.['required'] && registerForm.controls.confirmPassword.dirty) {
+            <small class="text-red-700 ml-3 mt-1">Confirmar contraseña es requerida</small>
+          }
+        </div>
+      </div>
+      <button pButton pRipple label="Ingresar" icon="pi pi-user" class="w-full"></button>
+    </form>
+  </div>
+</div>
