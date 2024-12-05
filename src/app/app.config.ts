@@ -1,23 +1,25 @@
-import {ApplicationConfig, isDevMode, provideZoneChangeDetection} from '@angular/core';
-import { provideRouter } from '@angular/router';
+import {ApplicationConfig, LOCALE_ID, provideZoneChangeDetection} from '@angular/core';
+import {provideRouter} from '@angular/router';
 
-import { routes } from './app.routes';
+import {routes} from './app.routes';
 import {provideHttpClient, withInterceptors} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideStore} from "@ngrx/store";
-import {authInitialState, authReducer} from "./modules/authentication/core/reducers/auth.reducer";
+import {authReducer} from "./modules/authentication/core/reducers/auth.reducer";
 import {provideEffects} from "@ngrx/effects";
-import {AuthEffect} from "./library/effects/auth.effect";
+import {productReducer} from './modules/dashboard/core/reducers/product.reducer';
+import {AuthEffect, ProductEffect} from './library/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideStore({
       auth: authReducer,
+      products: productReducer,
     }),
       provideEffects([
-          AuthEffect
+          AuthEffect, ProductEffect
       ]),
     provideAnimations(),
     provideRouter(routes),
@@ -30,5 +32,6 @@ export const appConfig: ApplicationConfig = {
       autoPause: true,
       traceLimit: 75,
     }),
+    { provide: LOCALE_ID, useValue: 'es-CL' },
   ]
 };
