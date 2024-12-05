@@ -4,7 +4,7 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () =>
-      import('./modules/landing/landing.module').then((m) => m.LandingModule),
+      import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
   {
     path: 'auth',

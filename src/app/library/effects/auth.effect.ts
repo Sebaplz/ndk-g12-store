@@ -1,17 +1,21 @@
 import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {AuthStore} from '../../resources/stores/auth.store';
-import {Store} from '@ngrx/store';
 import {authAction} from '../../global/actions/auth.action';
-import {exhaustMap, of} from 'rxjs';
+import {exhaustMap, of, Subject} from 'rxjs';
 import {AuthorizationService} from '../../global/services/authorization.service';
+import {catchError, map, mergeMap} from 'rxjs/operators';
+import {environment} from '../../../environments/environment.development';
+import {HttpClient} from '@angular/common/http';
+import {authReaction} from '../reactions/auth.reaction';
 
 @Injectable()
 export class AuthEffect {
-
+  private readonly API_URL = environment.apiUrl;
   private readonly actions$ = inject(Actions);
-  private readonly authStore = inject(Store<{ auth: AuthStore }>);
+  //private readonly authStore = inject(Store<{ auth: AuthStore }>);
   private readonly authService = inject(AuthorizationService);
+  private readonly http = inject(HttpClient);
+  public loginError$ = new Subject<string>();
 
   constructor() {}
 
@@ -33,4 +37,38 @@ export class AuthEffect {
     { functional: true }
   );
 
+  login$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(authReaction.login),
+      mergeMap(action =>
+        this.http.post<any>(`${this.API_URL}/auth/login`, {
+          email: action.email,
+          password: action.password
+        }).pipe(
+          map(response => {
+            this.authService.saveToken(response.token);
+            if(action.email === 'admin@admin.com') {
+              return authReaction.loginSuccess({
+                token: response.token,
+                isAdmin: true,
+                email: action.email,
+              });
+            }
+
+            return authReaction.loginSuccess({
+              token: response.token,
+              isAdmin: false,
+              email: action.email,
+            });
+          }),
+          catchError(err => {
+            const errorMessage = err.error?.message || 'An unexpected error occurred';
+            this.loginError$.next(errorMessage);
+            return of(authReaction.loginFail({ error: errorMessage }));
+          })
+        )
+      )
+    ),
+    { functional: true }
+  );
 }

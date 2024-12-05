@@ -8,6 +8,8 @@ export const authInitialState: AuthStore = {
   loading: true,
   check: false,
   token: null,
+  isAdmin: false,
+  email: null,
 }
 
 export const authReducer = createReducer(
@@ -16,12 +18,12 @@ export const authReducer = createReducer(
     (): AuthStore =>
       (authInitialState)),
   on(authReaction.loginSuccess,
-    (state, { token }): AuthStore =>
-      ({ ...state, loading: false, token, check: true })),
+    (state, { token, isAdmin, email }): AuthStore =>
+      ({ ...state, loading: false, email, token, check: true, isAdmin})),
 
   on(authReaction.loginFail,
     (state): AuthStore =>
-      ({ ...state, loading: false, check: true })),
+      ({ ...state, loading: false, check: true, isAdmin: false, email: null })),
 
   on(authAction.loadToken,
     (): AuthStore =>

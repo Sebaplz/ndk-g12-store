@@ -20,4 +20,16 @@ export interface AuthStore {
    * Indica si se está cargando la información
    */
   loading: boolean;
+
+  /**
+   * isAdmin
+   * Indica si es admin o no, esta por ahora, ya que no se a implementado en el backend
+   */
+  isAdmin: boolean;
+
+  /**
+   * email
+   * Email del usuario actual, para mostrarlo en la barra de navegación
+   */
+  email: string | null;
 }
