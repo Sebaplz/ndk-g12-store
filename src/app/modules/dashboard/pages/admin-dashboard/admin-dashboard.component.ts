@@ -17,6 +17,7 @@ import {FormsModule} from '@angular/forms';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import {OrdersComponent} from '../../components/orders/orders.component';
+import {AddProductComponent} from '../../components/add-product/add-product.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -35,7 +36,8 @@ import {OrdersComponent} from '../../components/orders/orders.component';
     FormsModule,
     ConfirmDialogModule,
     ToastModule,
-    OrdersComponent
+    OrdersComponent,
+    AddProductComponent
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
@@ -46,6 +48,21 @@ export class AdminDashboardComponent implements OnInit {
   originalProducts: Product[] = [];
   loading: boolean = false;
   totalRecords: number = 0;
+
+  visible: boolean = false;
+  newProduct: Product = {
+    id: 0,
+    name: '',
+    image: '',
+    description: '',
+    price: 0,
+    category: '',
+    stock: 0,
+  };
+
+  showDialog() {
+    this.visible = true;
+  }
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -118,4 +135,21 @@ export class AdminDashboardComponent implements OnInit {
       }
     });
   }
+
+  saveProduct($event: Product) {
+    // Aquí puedes agregar lógica para enviar el producto al backend si es necesario
+    this.products.push({ ...this.newProduct, id: this.products.length + 1 });
+    console.log('Product saved:', this.newProduct);
+    this.visible = false; // Cierra el modal después de guardar
+    this.newProduct = {
+      id: 0,
+      name: '',
+      image: '',
+      description: '',
+      price: 0,
+      category: '',
+      stock: 0,
+    }; // Limpia el formulario
+  }
+
 }

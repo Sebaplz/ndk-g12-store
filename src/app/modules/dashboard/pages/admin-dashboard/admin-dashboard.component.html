@@ -15,7 +15,7 @@
   >
     <ng-template pTemplate="caption">
       <div class="flex w-full justify-content-between">
-        <p-button icon="pi pi-plus" severity="info" ></p-button>
+        <p-button icon="pi pi-plus" severity="info" (onClick)="showDialog()"></p-button>
         <div class="flex flex-wrap justify-content-end gap-2">
           <p-iconField iconPosition="left">
             <p-inputIcon>
@@ -98,3 +98,4 @@
 </div>
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
+<app-add-product [visible]="visible" (onSave)="saveProduct($event)" (onClose)="visible = false"></app-add-product>
