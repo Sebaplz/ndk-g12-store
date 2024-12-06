@@ -35,4 +35,20 @@ export class ProductEffect {
     ),
     { functional: true }
   );
+
+  deleteProduct$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(productsReaction.delete),
+        switchMap((action) => {
+          return this.http.delete(`${this.API_URL}/products/${action.product.id}`, { responseType: 'text' }).pipe(
+            map(() => productsReaction.deleteSuccess({productId: action.product.id})),
+            catchError((err) => {
+              console.error('Error during delete:', err.error);
+              return of(productsReaction.deleteFail({ error: err.error }));
+            })
+          );
+        })
+      ),
+    { functional: true }
+  );
 }

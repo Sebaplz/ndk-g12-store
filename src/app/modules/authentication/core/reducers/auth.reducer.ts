@@ -31,8 +31,8 @@ export const authReducer = createReducer(
       (authInitialState)),
 
   on(authAction.loadTokenSuccess,
-    (state, { token }): AuthStore =>
-      ({ ...state, loading: false, token, check: true })),
+    (state, { token, isAdmin, email, isLoggedIn }): AuthStore =>
+      ({ ...state, loading: false, token, check: true, isAdmin, email, isLoggedIn })),
 
   on(authAction.loadTokenFailure,
     (state): AuthStore =>

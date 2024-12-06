@@ -7,5 +7,9 @@ export const productsReaction = createActionGroup({
     'Load': props<{ page: number, limit: number }>(),
     'Load Success': props<{ products: Product[], total: number, page: number, limit: number }>(),
     'Load Fail': props<{ error: any }>(),
+
+    'Delete': props<{ product: Product }>(),
+    'Delete Success': props<{ productId: number }>(),
+    'Delete Fail': props<{ error: any }>(),
   },
 });

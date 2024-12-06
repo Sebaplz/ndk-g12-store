@@ -1,8 +1,9 @@
 import {createReducer, on} from '@ngrx/store';
 import {productsReaction} from '../../../../library/reactions/products.reaction';
+import {Product} from '../utils/interfaces';
 
 export const productInitialState = {
-  data: [],
+  data: [] as Product[],
   total: 0,
   page: 1,
   limit: 10,
@@ -36,4 +37,21 @@ export const productReducer = createReducer(
       loading: false,
       error,
     })),
+  on(productsReaction.delete,
+    state => ({
+      ...state,
+      loading: true,
+      error: null,
+    })),
+  on(productsReaction.deleteSuccess, (state, {productId}) => ({
+    ...state,
+    data: state.data.filter(product => product.id !== productId),
+    total: state.total - 1,
+    loading: false
+  })),
+  on(productsReaction.deleteFail, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 )

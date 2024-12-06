@@ -8,6 +8,7 @@ import {environment} from '../../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
 import {authReaction} from '../reactions/auth.reaction';
 import {Router} from '@angular/router';
+import {jwtDecode, JwtPayload} from 'jwt-decode';
 
 @Injectable()
 export class AuthEffect {
@@ -28,7 +29,13 @@ export class AuthEffect {
             const token = this.authorizationService.getTokenStorage;
             if (token) {
               console.log('Existe sesión');
-              return of(authAction.loadTokenSuccess({ token }));
+              const decoded = jwtDecode<JwtPayload>(token);
+              // @ts-ignore
+              const email = decoded.email;
+              if(email === 'admin@admin.com') {
+                return of(authAction.loadTokenSuccess({ token, isAdmin: true, email, isLoggedIn: true }));
+              }
+              return of(authAction.loadTokenSuccess({ token, isAdmin: false, email, isLoggedIn: true }));
             }else{
               console.log('No existe sesión');
               return of(authAction.loadTokenFailure({error: 'No existe sesión'}));

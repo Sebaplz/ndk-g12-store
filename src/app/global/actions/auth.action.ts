@@ -10,7 +10,7 @@ export const authAction = createActionGroup({
     'Logout': emptyProps(),
 
     'Load Token': emptyProps(),
-    'Load Token Success': props<{ token: string }>(),
+    'Load Token Success': props<{ token: string, isAdmin: boolean, email: string, isLoggedIn: boolean }>(),
     'Load Token Failure': props<{ error: any }>(),
   },
 });

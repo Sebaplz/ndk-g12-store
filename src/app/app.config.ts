@@ -10,6 +10,8 @@ import {authReducer} from "./modules/authentication/core/reducers/auth.reducer";
 import {provideEffects} from "@ngrx/effects";
 import {productReducer} from './modules/dashboard/core/reducers/product.reducer';
 import {AuthEffect, ProductEffect} from './library/effects';
+import {ConfirmationService, MessageService} from 'primeng/api';
+import {authInterceptor} from './library/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideRouter(routes),
     provideHttpClient(
-        withInterceptors([])
+        withInterceptors([authInterceptor])
     ),
     provideStoreDevtools({
       maxAge: 25,
@@ -33,5 +35,7 @@ export const appConfig: ApplicationConfig = {
       traceLimit: 75,
     }),
     { provide: LOCALE_ID, useValue: 'es-CL' },
+    MessageService,
+    ConfirmationService,
   ]
 };
