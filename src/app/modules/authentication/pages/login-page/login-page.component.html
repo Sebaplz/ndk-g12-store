@@ -3,8 +3,8 @@
     <div class="text-center mb-5">
       <img src="/tienda-virtual-servicio.webp" alt="Logo" class="login-image">
       <div class="text-900 text-3xl font-medium mb-3">Ndk G12 Store</div>
-      <span class="text-600 font-medium line-height-3">¿No tienes una cuenta?</span>
-      <a routerLink="/auth/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">¡Crea una ahora!</a>
+      <span class="text-600 font-medium line-height-3">Don't have an account?</span>
+      <a routerLink="/auth/register" class="font-medium no-underline ml-2 text-blue-500 cursor-pointer">Create today!</a>
     </div>
     <form class="flex flex-column gap-4 pt-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-column justify-content-center align-items-center gap-5">
@@ -19,12 +19,12 @@
               [class.ng-invalid]="loginForm.controls.email.errors"
               [class.ng-dirty]="loginForm.controls.email.dirty"
             >
-            <label for="email" class="block text-900 font-medium">Correo electronico</label>
+            <label for="email" class="block text-900 font-medium">Email</label>
           </p-floatLabel>
           @if(loginForm.controls.email.errors?.['required'] && loginForm.controls.email.dirty) {
-            <small class="text-red-700 ml-3 mt-1">El correo es requerido</small>
+            <small class="text-red-700 ml-3 mt-1">Email is required</small>
           }@else if(loginForm.controls.email.errors?.['email'] && loginForm.controls.email.dirty){
-            <small class="text-red-700 ml-3 mt-1">El correo no es valido</small>
+            <small class="text-red-700 ml-3 mt-1">Email is not valid!</small>
           }
         </div>
         <div class="w-full flex flex-column">
@@ -38,24 +38,24 @@
               [class.ng-invalid]="loginForm.controls.password.errors"
               [class.ng-dirty]="loginForm.controls.password.dirty"
             >
-            <label for="password" class="block text-900 font-medium">Contraseña</label>
+            <label for="password" class="block text-900 font-medium">Password</label>
           </p-floatLabel>
           @if(loginForm.controls.password.errors?.['required'] && loginForm.controls.password.dirty) {
-            <small class="text-red-700 ml-3 mt-1">La contraseña es requerida</small>
+            <small class="text-red-700 ml-3 mt-1">Password is required</small>
           } @else if (loginForm.controls.password.errors?.['minlength'] && loginForm.controls.password.dirty) {
-            <small class="text-red-700 ml-3 mt-1">La contraseña debe tener al menos 6 caracteres</small>
+            <small class="text-red-700 ml-3 mt-1">Password must be at least 8 characters</small>
           } @else if (loginForm.controls.password.errors?.['maxlength'] && loginForm.controls.password.dirty) {
-            <small class="text-red-700 ml-3 mt-1">La contraseña debe tener como máximo 20 caracteres</small>
+            <small class="text-red-700 ml-3 mt-1">Password must be less than 20 characters</small>
           }
         </div>
       </div>
       <div class="flex align-items-center justify-content-between mb-6">
         <div class="flex align-items-center">
           <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
-          <label for="rememberme" class="text-900">Recordar</label>
+          <label for="rememberme" class="text-900">Remember me</label>
         </div>
       </div>
-      <button pButton pRipple label="Ingresar" icon="pi pi-user" class="w-full" [disabled]="loginForm.invalid"></button>
+      <button pButton pRipple label="Sign In" icon="pi pi-user" class="w-full" [disabled]="loginForm.invalid"></button>
       <div *ngIf="errorMessage !== null" class="text-red-700 ml-3 mt-1 text-center">
         {{ errorMessage }}
       </div>
