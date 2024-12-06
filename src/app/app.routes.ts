@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
+import {authGuard} from './global/guards';
 
 export const routes: Routes = [
   {
@@ -12,5 +13,6 @@ export const routes: Routes = [
       import('./modules/authentication/authentication.module').then(
         (m) => m.AuthenticationModule
       ),
+    canActivate: [authGuard],
   }
 ];

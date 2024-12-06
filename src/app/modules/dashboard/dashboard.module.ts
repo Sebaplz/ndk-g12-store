@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
+import {roleGuard} from '../../global/guards';
 
 const routes: Routes = [
   {
@@ -8,6 +9,7 @@ const routes: Routes = [
     loadComponent: () =>
       import('./pages/admin-dashboard/admin-dashboard.component')
         .then((c) => c.AdminDashboardComponent),
+    canActivate: [roleGuard],
   },
   {
     path: 'dashboard/user',
