@@ -13,7 +13,7 @@ import {authReaction} from '../../../../library/reactions/auth.reaction';
 import {UserCredentials} from '../../core/utils/interfaces/UserCredentials.interface';
 import {filter} from 'rxjs';
 import {NgIf} from '@angular/common';
-import {AuthEffect} from '../../../../library/effects/auth.effect';
+import {AuthEffect} from '../../../../library/effects';
 
 @Component({
   selector: 'login-page',
@@ -47,6 +47,14 @@ export class LoginPageComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.authEffect.loginError$.subscribe((error) => {
+      this.errorMessage = error;
+    });
+  }
+
+  onSubmit(): void {
+    const {email, password} = this.loginForm.value as UserCredentials;
+    this.authStore.dispatch(authReaction.login({email, password}));
     this.authStore
       .select((state) => state.auth)
       .pipe(
@@ -59,15 +67,6 @@ export class LoginPageComponent implements OnInit {
           this.router.navigate(['/dashboard/user']);
         }
       });
-
-    this.authEffect.loginError$.subscribe((error) => {
-      this.errorMessage = error;
-    });
-  }
-
-  onSubmit(): void {
-    const {email, password} = this.loginForm.value as UserCredentials;
-    this.authStore.dispatch(authReaction.login({email, password}));
   }
 
 }

@@ -12,6 +12,7 @@ export class AuthorizationService {
 
   store = inject(Store<{ auth: AuthStore }>);
   router = inject(Router);
+  private readonly TOKEN_KEY = 'authorization';
 
 
   constructor() {
@@ -27,11 +28,11 @@ export class AuthorizationService {
   }
 
   saveToken(token: string) {
-    localStorage.setItem('authorization', token);
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   get getTokenStorage() {
-    return localStorage.getItem('authorization');
+    return localStorage.getItem(this.TOKEN_KEY);
   }
 
   getToken() {
@@ -64,6 +65,10 @@ export class AuthorizationService {
         return !isLoggedIn;
       })
     );
+  }
+
+  logout() {
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 }
 

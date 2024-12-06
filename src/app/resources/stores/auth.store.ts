@@ -32,4 +32,10 @@ export interface AuthStore {
    * Email del usuario actual, para mostrarlo en la barra de navegación
    */
   email: string | null;
+
+  /**
+   * isLoggedIn
+   * Indica si el usuario esta autenticado o no
+   */
+  isLoggedIn: boolean;
 }

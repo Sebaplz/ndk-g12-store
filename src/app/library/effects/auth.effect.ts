@@ -1,21 +1,23 @@
 import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {authAction} from '../../global/actions/auth.action';
-import {exhaustMap, of, Subject} from 'rxjs';
+import {exhaustMap, of, Subject, tap} from 'rxjs';
 import {AuthorizationService} from '../../global/services/authorization.service';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {environment} from '../../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
 import {authReaction} from '../reactions/auth.reaction';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthEffect {
   private readonly API_URL = environment.apiUrl;
   private readonly actions$ = inject(Actions);
   //private readonly authStore = inject(Store<{ auth: AuthStore }>);
-  private readonly authService = inject(AuthorizationService);
+  private readonly authorizationService = inject(AuthorizationService);
   private readonly http = inject(HttpClient);
   public loginError$ = new Subject<string>();
+  private readonly router = inject(Router);
 
   constructor() {}
 
@@ -23,7 +25,7 @@ export class AuthEffect {
       this.actions$.pipe(
         ofType(authAction.loadToken),
         exhaustMap(() => {
-            const token = this.authService.getTokenStorage;
+            const token = this.authorizationService.getTokenStorage;
             if (token) {
               console.log('Existe sesión');
               return of(authAction.loadTokenSuccess({ token }));
@@ -46,7 +48,7 @@ export class AuthEffect {
           password: action.password
         }).pipe(
           map(response => {
-            this.authService.saveToken(response.token);
+            this.authorizationService.saveToken(response.token);
             if(action.email === 'admin@admin.com') {
               return authReaction.loginSuccess({
                 token: response.token,
@@ -70,5 +72,16 @@ export class AuthEffect {
       )
     ),
     { functional: true }
+  );
+
+  logout$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(authAction.logout),
+        tap(() => {
+          this.authorizationService.logout();
+          this.router.navigate(['/auth/login']);
+        })
+      ),
+    { dispatch: false, functional: true }
   );
 }
