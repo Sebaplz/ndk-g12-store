@@ -36,7 +36,7 @@ import {Observable} from 'rxjs';
 export class UserDashboardComponent implements OnInit {
   productsStore = inject(Store<{ products: ProductsStore }>);
   authStore = inject(Store<{ auth: AuthStore }>);
-  isLoggedIn$: Observable<boolean> = this.authStore.select(state => state.auth.isLoggedIn);
+  isAdmin$: Observable<boolean> = this.authStore.select(state => state.auth.isAdmin);
 
   originalProducts: Product[] = [];
   products: Product[] = [];
