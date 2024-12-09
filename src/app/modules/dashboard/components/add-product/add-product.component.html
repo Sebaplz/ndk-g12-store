@@ -4,98 +4,105 @@
   [modal]="true"
   [style]="{ width: '30rem' }">
   <span class="p-text-secondary block mb-5">Fill in the product details.</span>
-  <form [formGroup]="productForm">
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="name" class="font-semibold w-6rem">Name</label>
-      <input
-        pInputText
-        id="name"
-        class="flex-auto"
-        formControlName="name"
-        placeholder="Enter product name"/>
+  <form [formGroup]="productForm" class="flex flex-column gap-4">
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="name"
+          class="w-full"
+          formControlName="name"
+        >
+        <label for="name" class="font-semibold w-6rem">Name</label>
+      </p-floatLabel>
       @if (productForm.controls['name'].errors?.['required'] && productForm.controls['name'].dirty) {
-        <small class="text-red-700">Name is required</small>
+        <small class="text-red-700 ml-3 mt-1">Name is required</small>
       } @else if (productForm.controls['name'].errors?.['minlength'] && productForm.controls['name'].dirty) {
-        <small class="text-red-700">Name must be at least 3 characters long</small>
+        <small class="text-red-700 ml-3 mt-1">Name must be at least 3 characters long</small>
       } @else if (productForm.controls['name'].errors?.['maxlength'] && productForm.controls['name'].dirty) {
-        <small class="text-red-700">Name cannot exceed 50 characters</small>
+        <small class="text-red-700 ml-3 mt-1">Name cannot exceed 50 characters</small>
       }
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="price" class="font-semibold w-6rem">Price</label>
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
       <input
         pInputText
         id="price"
-        class="flex-auto"
+        class="w-full"
         formControlName="price"
-        placeholder="Enter product price"
-        type="number"/>
+        type="number">
+        <label for="price" class="font-semibold w-6rem">Price</label>
+      </p-floatLabel>
       @if (productForm.controls['price'].errors?.['required'] && productForm.controls['price'].dirty) {
-        <small class="text-red-700">Price is required</small>
+        <small class="text-red-700 ml-3 mt-1">Price is required</small>
       } @else if (productForm.controls['price'].errors?.['min'] && productForm.controls['price'].dirty) {
-        <small class="text-red-700">Price must be greater than 0</small>
+        <small class="text-red-700 ml-3 mt-1">Price must be greater than 0</small>
       } @else if (productForm.controls['price'].errors?.['max'] && productForm.controls['price'].dirty) {
-        <small class="text-red-700">Price cannot exceed 10.000.000 CLP</small>
+        <small class="text-red-700 ml-3 mt-1">Price cannot exceed 10.000.000 CLP</small>
       }
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="stock" class="font-semibold w-6rem">Stock</label>
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
       <input
         pInputText
         id="stock"
-        class="flex-auto"
+        class="w-full"
         formControlName="stock"
-        placeholder="Enter stock quantity"
-        type="number"/>
+        type="number">
+        <label for="stock" class="font-semibold w-6rem">Stock</label>
+      </p-floatLabel>
       @if (productForm.controls['stock'].errors?.['required'] && productForm.controls['stock'].dirty) {
-        <small class="text-red-700">Stock is required</small>
+        <small class="text-red-700 ml-3 mt-1">Stock is required</small>
       } @else if (productForm.controls['stock'].errors?.['min'] && productForm.controls['stock'].dirty) {
-        <small class="text-red-700">Stock cannot be negative</small>
+        <small class="text-red-700 ml-3 mt-1">Stock must be greater than 0</small>
       } @else if (productForm.controls['stock'].errors?.['max'] && productForm.controls['stock'].dirty) {
-        <small class="text-red-700">Stock cannot exceed 100</small>
+        <small class="text-red-700 ml-3 mt-1">Stock cannot exceed 100</small>
       }
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="category" class="font-semibold w-6rem">Category</label>
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
       <input
         pInputText
         id="category"
-        class="flex-auto"
-        formControlName="category"
-        placeholder="Enter category"/>
+        class="w-full"
+        formControlName="category">
+        <label for="category" class="font-semibold w-6rem">Category</label>
+      </p-floatLabel>
       @if (productForm.controls['category'].errors?.['required'] && productForm.controls['category'].dirty) {
-        <small class="text-red-700">Category is required</small>
+        <small class="text-red-700 ml-3 mt-1">Category is required</small>
       } @else if (productForm.controls['category'].errors?.['minlength'] && productForm.controls['category'].dirty) {
-        <small class="text-red-700">Category must be at least 3 characters long</small>
+        <small class="text-red-700 ml-3 mt-1">Category must be at least 3 characters long</small>
       } @else if (productForm.controls['category'].errors?.['maxlength'] && productForm.controls['category'].dirty) {
-        <small class="text-red-700">Category cannot exceed 50 characters</small>
+        <small class="text-red-700 ml-3 mt-1">Category cannot exceed 50 characters</small>
       }
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="image" class="font-semibold w-6rem">Image URL</label>
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
       <input
         pInputText
         id="image"
-        class="flex-auto"
-        formControlName="image"
-        placeholder="Enter image URL"/>
+        class="w-full"
+        formControlName="image">
+        <label for="image" class="font-semibold w-6rem">Image URL</label>
+      </p-floatLabel>
       @if (productForm.controls['image'].errors?.['required'] && productForm.controls['image'].dirty) {
-        <small class="text-red-700">Image URL is required</small>
+        <small class="text-red-700 ml-3 mt-1">Image URL is required</small>
       }
     </div>
-    <div class="flex align-items-center gap-3 mb-3">
-      <label for="description" class="font-semibold w-6rem">Description</label>
+    <div class="w-full flex flex-column mb-2">
+      <p-floatLabel>
       <textarea
         pInputTextarea
         id="description"
-        class="flex-auto"
-        formControlName="description"
-        placeholder="Enter product description">
+        class="w-full"
+        formControlName="description">
       </textarea>
+        <label for="description" class="font-semibold w-6rem">Description</label>
+      </p-floatLabel>
       @if (productForm.controls['description'].errors?.['minlength'] && productForm.controls['description'].dirty) {
-        <small class="text-red-700">Description must be at least 3 characters long</small>
+        <small class="text-red-700 ml-3 mt-1">Description must be at least 3 characters long</small>
       } @else if (productForm.controls['description'].errors?.['maxlength'] && productForm.controls['description'].dirty) {
-        <small class="text-red-700">Description cannot exceed 500 characters</small>
+        <small class="text-red-700 ml-3 mt-1">Description cannot exceed 500 characters</small>
       }
     </div>
   </form>

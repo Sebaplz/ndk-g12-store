@@ -6,11 +6,12 @@ import {NgIf} from '@angular/common';
 import {InputTextModule} from 'primeng/inputtext';
 import {Button} from 'primeng/button';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import {FloatLabelModule} from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-add-product',
   standalone: true,
-  imports: [ReactiveFormsModule, DialogModule, NgIf, InputTextModule, Button, InputTextareaModule],
+  imports: [ReactiveFormsModule, DialogModule, NgIf, InputTextModule, Button, InputTextareaModule, FloatLabelModule],
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss']
 })
@@ -30,8 +31,8 @@ export class AddProductComponent implements OnInit {
   initializeForm(): void {
     this.productForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-      price: [0, [Validators.required, Validators.min(1), Validators.max(10000000)]],
-      stock: [0, [Validators.required, Validators.min(0), Validators.max(100)]],
+      price: [1, [Validators.required, Validators.min(1), Validators.max(10000000)]],
+      stock: [1, [Validators.required, Validators.min(1), Validators.max(100)]],
       category: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       image: ['', [Validators.required]],
       description: ['', [Validators.minLength(3), Validators.maxLength(500)]],
@@ -42,6 +43,7 @@ export class AddProductComponent implements OnInit {
     if (this.productForm.valid) {
       this.onSave.emit(this.productForm.value);
       this.onClose.emit();
+      this.productForm.reset();
     } else {
       this.productForm.markAllAsTouched();
     }
