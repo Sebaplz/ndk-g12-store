@@ -3,7 +3,7 @@ import {MenuModule} from 'primeng/menu';
 import {Button} from 'primeng/button';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {AsyncPipe} from "@angular/common";
-import {AuthStore} from '../../../resources/stores/auth.store';
+import {AuthStore} from '../../../resources/stores';
 import {Store} from '@ngrx/store';
 import {authAction} from '../../actions/auth.action';
 
