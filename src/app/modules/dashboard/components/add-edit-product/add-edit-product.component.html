@@ -1,5 +1,5 @@
 <p-dialog
-  header="Add Product"
+  [header]="productToEdit ? 'Update Product' : 'Add Product'"
   [(visible)]="visible"
   [modal]="true"
   [style]="{ width: '30rem' }">
@@ -110,6 +110,7 @@
     <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="onClose.emit()"></p-button>
     <p-button
       label="Save"
+      [label]="productToEdit ? 'Update' : 'Save'"
       [outlined]="true"
       severity="primary"
       (onClick)="saveProduct()"

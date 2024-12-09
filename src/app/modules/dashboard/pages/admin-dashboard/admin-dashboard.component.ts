@@ -17,7 +17,7 @@ import {FormsModule} from '@angular/forms';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ToastModule} from 'primeng/toast';
 import {OrdersComponent} from '../../components/orders/orders.component';
-import {AddProductComponent} from '../../components/add-product/add-product.component';
+import {AddEditProductComponent} from '../../components/add-edit-product/add-edit-product.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -37,7 +37,7 @@ import {AddProductComponent} from '../../components/add-product/add-product.comp
     ConfirmDialogModule,
     ToastModule,
     OrdersComponent,
-    AddProductComponent
+    AddEditProductComponent
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.scss'
@@ -62,6 +62,8 @@ export class AdminDashboardComponent implements OnInit {
     category: '',
     stock: 0,
   };
+
+  selectedProduct: Product | null = null;
 
   showDialog() {
     this.visible = true;
@@ -98,8 +100,15 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  editProduct(product: Product) {
-    console.log('Edit product', product);
+  editProduct(product: Product): void {
+    this.selectedProduct = product;
+    this.visible = true;
+  }
+
+  updateProduct($event: Product): void {
+    this.productsStore.dispatch(productsReaction.update({ product: $event }));
+    this.visible = false;
+    this.selectedProduct = null;
   }
 
   deleteProduct(product: Product) {
@@ -152,6 +161,11 @@ export class AdminDashboardComponent implements OnInit {
     } else {
       this.products = [...this.originalProducts];
     }
+  }
+
+  onClose() {
+    this.visible = false;
+    this.selectedProduct = null;
   }
 
 }

@@ -4,7 +4,7 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {productsReaction} from '../reactions/products.reaction';
 import {catchError, map, of, switchMap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ProductResponse, ProductsResponse} from '../../modules/dashboard/core/utils/interfaces';
+import {Product, ProductResponse, ProductsResponse} from '../../modules/dashboard/core/utils/interfaces';
 import {MessageService} from 'primeng/api';
 
 @Injectable()
@@ -58,7 +58,7 @@ export class ProductEffect {
       this.actions$.pipe(
         ofType(productsReaction.add),
         switchMap((action) => {
-          return this.http.post<ProductResponse>(`${this.API_URL}/products`, action.product).pipe(
+          return this.http.post<Product>(`${this.API_URL}/products`, action.product).pipe(
             map((response: ProductResponse) =>
               productsReaction.addSuccess({ productResponse: response })
             ),
@@ -70,6 +70,21 @@ export class ProductEffect {
         })
       ),
     { functional: true }
+  );
+
+  updateProduct$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(productsReaction.update),
+      switchMap((action) => {
+        const { id, ...productData } = action.product;
+        return this.http.patch<Product>(`${this.API_URL}/products/${id}`, productData).pipe(
+          map((updatedProduct: ProductResponse) =>
+            productsReaction.updateSuccess({ productResponse: updatedProduct })
+          ),
+          catchError(error => of(productsReaction.updateFail({ error })))
+        );
+      })
+    )
   );
 
   addProductFeedback$ = createEffect(() =>
@@ -109,6 +124,28 @@ export class ProductEffect {
               severity: 'error',
               summary: 'Delete Product Failed',
               detail: `An error occurred while deleting the product.`,
+            });
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  updateProductFeedback$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(productsReaction.updateSuccess, productsReaction.updateFail),
+        map(action => {
+          if (action.type === '[Products Reactions] Update Success') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Update Successful',
+              detail: `Product "${action.productResponse.name}" updated successfully.`,
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Update Failed',
+              detail: `An error occurred while updating the product.`,
             });
           }
         })

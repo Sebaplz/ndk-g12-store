@@ -21,6 +21,7 @@ export const productReducer = createReducer(
       loading: true,
       error: null,
     })),
+
   on(productsReaction.loadSuccess,
     (state, {products, total, page, limit}): any => ({
       ...state,
@@ -31,35 +32,41 @@ export const productReducer = createReducer(
       loading: false,
       error: null,
     })),
+
   on(productsReaction.loadFail,
     (state, {error}): any => ({
       ...state,
       loading: false,
       error,
     })),
+
   on(productsReaction.delete,
     state => ({
       ...state,
       loading: true,
       error: null,
     })),
+
   on(productsReaction.deleteSuccess, (state, {productId}) => ({
     ...state,
     data: state.data.filter(product => product.id !== productId),
     total: state.total - 1,
     loading: false
   })),
+
   on(productsReaction.deleteFail, (state, { error }) => ({
     ...state,
     loading: false,
     error,
   })),
+
   on(productsReaction.add,
     state => ({
       ...state,
       loading: true,
       error: null,
     })),
+
   on(productsReaction.addSuccess, (state, {productResponse}) => ({
     ...state,
     data: [...state.data, productResponse],
@@ -67,9 +74,32 @@ export const productReducer = createReducer(
     loading: false,
     error: null,
   })),
+
   on(productsReaction.addFail, (state, { error }) => ({
     ...state,
     loading: false,
     error,
   })),
+
+  on(productsReaction.update,
+    state => ({
+      ...state,
+      loading: true,
+      error: null,
+    })),
+
+  on(productsReaction.updateSuccess, (state, { productResponse }) => ({
+    ...state,
+    data: state.data.map(product =>
+      product.id === productResponse.id ? productResponse : product
+    ),
+    loading: false,
+    error: null,
+  })),
+
+on(productsReaction.updateFail, (state, {error}) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 )

@@ -15,5 +15,9 @@ export const productsReaction = createActionGroup({
     'Add': props<{ product: Product }>(),
     'Add Success': props<{ productResponse: ProductResponse }>(),
     'Add Fail': props<{ error: any }>(),
+
+    'Update': props<{ product: Product }>(),
+    'Update Success': props<{ productResponse: ProductResponse }>(),
+    'Update Fail': props<{ error: any }>(),
   },
 });

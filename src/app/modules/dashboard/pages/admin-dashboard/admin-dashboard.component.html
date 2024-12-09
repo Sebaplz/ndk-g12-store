@@ -96,4 +96,11 @@
 </div>
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<app-add-product [visible]="visible" (onSave)="saveProduct($event)" (onClose)="visible = false"></app-add-product>
+<app-add-edit-product
+  [visible]="visible"
+  [productToEdit]="selectedProduct"
+  (onSave)="saveProduct($event)"
+  (onUpdate)="updateProduct($event)"
+  (onClose)="onClose()">
+</app-add-edit-product>
+
