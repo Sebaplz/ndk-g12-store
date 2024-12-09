@@ -13,11 +13,11 @@
         class="flex-auto"
         formControlName="name"
         placeholder="Enter product name"/>
-      @if (productForm.controls['name']?.errors?.['required'] && productForm.controls['name']?.dirty) {
+      @if (productForm.controls['name'].errors?.['required'] && productForm.controls['name'].dirty) {
         <small class="text-red-700">Name is required</small>
-      } @else if (productForm.controls['name']?.errors?.['minlength'] && productForm.controls['name']?.dirty) {
+      } @else if (productForm.controls['name'].errors?.['minlength'] && productForm.controls['name'].dirty) {
         <small class="text-red-700">Name must be at least 3 characters long</small>
-      } @else if (productForm.controls['name']?.errors?.['maxlength'] && productForm.controls['name']?.dirty) {
+      } @else if (productForm.controls['name'].errors?.['maxlength'] && productForm.controls['name'].dirty) {
         <small class="text-red-700">Name cannot exceed 50 characters</small>
       }
     </div>
@@ -30,11 +30,11 @@
         formControlName="price"
         placeholder="Enter product price"
         type="number"/>
-      @if (productForm.controls['price']?.errors?.['required'] && productForm.controls['price']?.dirty) {
+      @if (productForm.controls['price'].errors?.['required'] && productForm.controls['price'].dirty) {
         <small class="text-red-700">Price is required</small>
-      } @else if (productForm.controls['price']?.errors?.['min'] && productForm.controls['price']?.dirty) {
+      } @else if (productForm.controls['price'].errors?.['min'] && productForm.controls['price'].dirty) {
         <small class="text-red-700">Price must be greater than 0</small>
-      } @else if (productForm.controls['price']?.errors?.['max'] && productForm.controls['price']?.dirty) {
+      } @else if (productForm.controls['price'].errors?.['max'] && productForm.controls['price'].dirty) {
         <small class="text-red-700">Price cannot exceed 10.000.000 CLP</small>
       }
     </div>
@@ -47,11 +47,11 @@
         formControlName="stock"
         placeholder="Enter stock quantity"
         type="number"/>
-      @if (productForm.controls['stock']?.errors?.['required'] && productForm.controls['stock']?.dirty) {
+      @if (productForm.controls['stock'].errors?.['required'] && productForm.controls['stock'].dirty) {
         <small class="text-red-700">Stock is required</small>
-      } @else if (productForm.controls['stock']?.errors?.['min'] && productForm.controls['stock']?.dirty) {
+      } @else if (productForm.controls['stock'].errors?.['min'] && productForm.controls['stock'].dirty) {
         <small class="text-red-700">Stock cannot be negative</small>
-      } @else if (productForm.controls['stock']?.errors?.['max'] && productForm.controls['stock']?.dirty) {
+      } @else if (productForm.controls['stock'].errors?.['max'] && productForm.controls['stock'].dirty) {
         <small class="text-red-700">Stock cannot exceed 100</small>
       }
     </div>
@@ -63,11 +63,11 @@
         class="flex-auto"
         formControlName="category"
         placeholder="Enter category"/>
-      @if (productForm.controls['category']?.errors?.['required'] && productForm.controls['category']?.dirty) {
+      @if (productForm.controls['category'].errors?.['required'] && productForm.controls['category'].dirty) {
         <small class="text-red-700">Category is required</small>
-      } @else if (productForm.controls['category']?.errors?.['minlength'] && productForm.controls['category']?.dirty) {
+      } @else if (productForm.controls['category'].errors?.['minlength'] && productForm.controls['category'].dirty) {
         <small class="text-red-700">Category must be at least 3 characters long</small>
-      } @else if (productForm.controls['category']?.errors?.['maxlength'] && productForm.controls['category']?.dirty) {
+      } @else if (productForm.controls['category'].errors?.['maxlength'] && productForm.controls['category'].dirty) {
         <small class="text-red-700">Category cannot exceed 50 characters</small>
       }
     </div>
@@ -79,7 +79,7 @@
         class="flex-auto"
         formControlName="image"
         placeholder="Enter image URL"/>
-      @if (productForm.controls['image']?.errors?.['required'] && productForm.controls['image']?.dirty) {
+      @if (productForm.controls['image'].errors?.['required'] && productForm.controls['image'].dirty) {
         <small class="text-red-700">Image URL is required</small>
       }
     </div>
@@ -92,9 +92,9 @@
         formControlName="description"
         placeholder="Enter product description">
       </textarea>
-      @if (productForm.controls['description']?.errors?.['minlength'] && productForm.controls['description']?.dirty) {
+      @if (productForm.controls['description'].errors?.['minlength'] && productForm.controls['description'].dirty) {
         <small class="text-red-700">Description must be at least 3 characters long</small>
-      } @else if (productForm.controls['description']?.errors?.['maxlength'] && productForm.controls['description']?.dirty) {
+      } @else if (productForm.controls['description'].errors?.['maxlength'] && productForm.controls['description'].dirty) {
         <small class="text-red-700">Description cannot exceed 500 characters</small>
       }
     </div>
