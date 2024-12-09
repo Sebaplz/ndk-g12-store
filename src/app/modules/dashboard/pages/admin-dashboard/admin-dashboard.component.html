@@ -3,7 +3,7 @@
 <div class="card w-full h-full lg:w-9 mx-auto">
   <p-table
     #dtproducts
-    [value]="originalProducts"
+    [value]="products"
     [paginator]="true"
     [rows]="5"
     [loading]="loading"
@@ -17,16 +17,14 @@
       <div class="flex w-full justify-content-between">
         <p-button icon="pi pi-plus" severity="info" (onClick)="showDialog()"></p-button>
         <div class="flex flex-wrap justify-content-end gap-2">
-          <p-iconField iconPosition="left">
-            <p-inputIcon>
-              <i class="pi pi-search"></i>
-            </p-inputIcon>
-            <input
-              pInputText
-              type="text"
-              (input)="dtproducts.filter($any($event.target).value, 'category', 'contains')"
-              placeholder="Search by Category"/>
-          </p-iconField>
+          <p-dropdown
+            [options]="categories"
+            [(ngModel)]="selectedCategory"
+            placeholder="Filter by Category"
+            (onChange)="onCategoryChange()"
+            [showClear]="true"
+            styleClass="mb-2 md:mb-0"
+          />
           <p-iconField iconPosition="left">
             <p-inputIcon>
               <i class="pi pi-search"></i>

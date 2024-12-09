@@ -45,9 +45,12 @@ import {AddProductComponent} from '../../components/add-product/add-product.comp
 export class AdminDashboardComponent implements OnInit {
   productsStore = inject(Store<{ products: ProductsStore }>);
   products: Product[] = [];
-  originalProducts: Product[] = [];
   loading: boolean = false;
   totalRecords: number = 0;
+  originalProducts: Product[] = [];
+
+  categories: string[] = [];
+  selectedCategory: string = '';
 
   visible: boolean = false;
   newProduct: Product = {
@@ -71,6 +74,7 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit() {
     this.loadProducts()
+    this.extractCategories();
   }
 
   getSeverity(stock: number): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | undefined {
@@ -90,6 +94,7 @@ export class AdminDashboardComponent implements OnInit {
       this.totalRecords = products.total;
       this.loading = products.loading;
       this.originalProducts = [...products.data];
+      this.extractCategories();
     });
   }
 
@@ -140,7 +145,7 @@ export class AdminDashboardComponent implements OnInit {
     // Aquí puedes agregar lógica para enviar el producto al backend si es necesario
     this.products.push({ ...this.newProduct, id: this.products.length + 1 });
     console.log('Product saved:', this.newProduct);
-    this.visible = false; // Cierra el modal después de guardar
+    this.visible = false;
     this.newProduct = {
       id: 0,
       name: '',
@@ -149,7 +154,22 @@ export class AdminDashboardComponent implements OnInit {
       price: 0,
       category: '',
       stock: 0,
-    }; // Limpia el formulario
+    };
+  }
+
+  extractCategories() {
+    this.categories = [...new Set(this.originalProducts.map(product => product.category))];
+  }
+
+  onCategoryChange() {
+    // Filtrar productos por categoría
+    if (this.selectedCategory) {
+      this.products = this.originalProducts.filter(
+        product => product.category === this.selectedCategory
+      );
+    } else {
+      this.products = [...this.originalProducts];
+    }
   }
 
 }
