@@ -4,13 +4,15 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {productsReaction} from '../reactions/products.reaction';
 import {catchError, map, of, switchMap} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {ProductsResponse} from '../../modules/dashboard/core/utils/interfaces';
+import {ProductResponse, ProductsResponse} from '../../modules/dashboard/core/utils/interfaces';
+import {MessageService} from 'primeng/api';
 
 @Injectable()
 export class ProductEffect {
   private readonly API_URL = environment.apiUrl;
   private readonly actions$ = inject(Actions);
   private readonly http = inject(HttpClient);
+  private readonly messageService = inject(MessageService);
 
   constructor() {}
 
@@ -50,5 +52,67 @@ export class ProductEffect {
         })
       ),
     { functional: true }
+  );
+
+  addProduct$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(productsReaction.add),
+        switchMap((action) => {
+          return this.http.post<ProductResponse>(`${this.API_URL}/products`, action.product).pipe(
+            map((response: ProductResponse) =>
+              productsReaction.addSuccess({ productResponse: response })
+            ),
+            catchError((err) => {
+              console.error('Error during add:', err.error);
+              return of(productsReaction.addFail({ error: err.error }));
+            })
+          );
+        })
+      ),
+    { functional: true }
+  );
+
+  addProductFeedback$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(productsReaction.addSuccess, productsReaction.addFail),
+        map(action => {
+          if (action.type === '[Products Reactions] Add Success') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Add Product Success',
+              detail: `Product "${action.productResponse.name}" added successfully.`,
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Add Product Failed',
+              detail: `An error occurred while adding the product.`,
+            });
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  deleteProductFeedback$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(productsReaction.deleteSuccess, productsReaction.deleteFail),
+        map(action => {
+          if (action.type === '[Products Reactions] Delete Success') {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Delete Product Success',
+              detail: `Product deleted successfully.`,
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Delete Product Failed',
+              detail: `An error occurred while deleting the product.`,
+            });
+          }
+        })
+      ),
+    { dispatch: false }
   );
 }

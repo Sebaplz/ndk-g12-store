@@ -53,5 +53,23 @@ export const productReducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
+  on(productsReaction.add,
+    state => ({
+      ...state,
+      loading: true,
+      error: null,
+    })),
+  on(productsReaction.addSuccess, (state, {productResponse}) => ({
+    ...state,
+    data: [...state.data, productResponse],
+    total: state.total + 1,
+    loading: false,
+    error: null,
+  })),
+  on(productsReaction.addFail, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  })),
 )

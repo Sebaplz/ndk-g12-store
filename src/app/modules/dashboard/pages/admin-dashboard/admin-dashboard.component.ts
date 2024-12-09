@@ -90,7 +90,7 @@ export class AdminDashboardComponent implements OnInit {
   loadProducts(page: number = 1, rows: number = 100) {
     this.productsStore.dispatch(productsReaction.load({page, limit: rows}));
     this.productsStore.select(state => state.products).subscribe(products => {
-      this.products = products.data;
+      this.products = [...products.data];
       this.totalRecords = products.total;
       this.loading = products.loading;
       this.originalProducts = [...products.data];
@@ -113,23 +113,6 @@ export class AdminDashboardComponent implements OnInit {
       rejectButtonStyleClass: "p-button-text",
       accept: () => {
         this.productsStore.dispatch(productsReaction.delete({ product }));
-
-        // Escucha el estado del store -> Esto esta medio raro
-        this.productsStore.select(state => state.products).subscribe(products => {
-          if (products.error) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: `Failed to delete the product: ${product.name}`
-            });
-          } else if (!products.loading) {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Deletion Successful',
-              detail: `Product "${product.name}" deleted successfully`
-            });
-          }
-        });
       },
       reject: () => {
         this.messageService.add({
@@ -141,10 +124,9 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+
   saveProduct($event: Product) {
-    // Aquí puedes agregar lógica para enviar el producto al backend si es necesario
-    this.products.push({ ...this.newProduct, id: this.products.length + 1 });
-    console.log('Product saved:', this.newProduct);
+    this.productsStore.dispatch(productsReaction.add({ product: $event }));
     this.visible = false;
     this.newProduct = {
       id: 0,

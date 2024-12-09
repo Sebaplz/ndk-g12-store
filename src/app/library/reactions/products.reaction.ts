@@ -1,5 +1,5 @@
 import {createActionGroup, props} from '@ngrx/store';
-import {Product} from '../../modules/dashboard/core/utils/interfaces';
+import {Product, ProductResponse} from '../../modules/dashboard/core/utils/interfaces';
 
 export const productsReaction = createActionGroup({
   source: 'Products Reactions',
@@ -11,5 +11,9 @@ export const productsReaction = createActionGroup({
     'Delete': props<{ product: Product }>(),
     'Delete Success': props<{ productId: number }>(),
     'Delete Fail': props<{ error: any }>(),
+
+    'Add': props<{ product: Product }>(),
+    'Add Success': props<{ productResponse: ProductResponse }>(),
+    'Add Fail': props<{ error: any }>(),
   },
 });
