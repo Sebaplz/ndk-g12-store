@@ -83,6 +83,33 @@ export class CartEffect {
     { functional: true }
   );
 
+  decrementQuantity$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(cartAction.decrementQuantity),
+        switchMap(({ productId }) => {
+          const cartProducts = this.cartService.getCartFromLocalStorage;
+          const updatedProducts = cartProducts.map(product =>
+            product.id === productId && product.quantity > 1
+              ? {
+                ...product,
+                quantity: product.quantity - 1,
+                subTotal: product.subTotal - product.price
+              }
+              : product
+          );
+
+          this.cartService.saveCart(updatedProducts);
+          const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0);
+
+          return of(cartAction.saveCart({ cartProducts: updatedProducts, total }));
+        }),
+        catchError(error =>
+          of(cartAction.loadCartFail({ error }))
+        )
+      ),
+    { functional: true }
+  );
+
   removeProduct$ = createEffect(() =>
       this.actions$.pipe(
         ofType(cartAction.removeProduct),

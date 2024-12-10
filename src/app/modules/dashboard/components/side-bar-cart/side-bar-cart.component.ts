@@ -31,8 +31,8 @@ export class SideBarCartComponent {
 
   products$ = this.cartStore.select(state => state.cart.products);
 
-  decreaseQuantity(product: Product){
-
+  decreaseQuantity(product: Product): void {
+    this.cartStore.dispatch(cartAction.decrementQuantity({ productId: product.id }));
   }
 
   increaseQuantity(product: Product){

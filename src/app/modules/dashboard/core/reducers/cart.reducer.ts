@@ -95,6 +95,24 @@ export const cartReducer = createReducer(
     };
   }),
 
+  on(cartAction.decrementQuantity, (state, { productId }): CartStore => {
+    const updatedProducts = state.products.map(product =>
+      product.id === productId && product.quantity > 1
+        ? {
+          ...product,
+          quantity: product.quantity - 1,
+          subTotal: product.subTotal - product.price,
+        }
+        : product
+    );
+
+    return {
+      ...state,
+      products: updatedProducts,
+      total: updatedProducts.reduce((sum, p) => sum + p.subTotal, 0),
+    };
+  }),
+
   on(cartAction.blockAddButton, (state, { productId }) => ({
     ...state,
     blockedProducts: [...state.blockedProducts, productId],

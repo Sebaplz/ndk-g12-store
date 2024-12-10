@@ -15,6 +15,7 @@ export const cartAction = createActionGroup({
     'Save Cart': props<{ cartProducts: CartProduct[], total: number }>(),
 
     'Increment Quantity': props<{ productId: number }>(),
+    'Decrement Quantity': props<{ productId: number }>(),
     'Block Add Button': props<{ productId: number }>(),
 
     'Remove Product': props<{ product: Product }>(),
