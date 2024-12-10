@@ -35,8 +35,8 @@ export class SideBarCartComponent {
     this.cartStore.dispatch(cartAction.decrementQuantity({ productId: product.id }));
   }
 
-  increaseQuantity(product: Product){
-
+  increaseQuantity(product: Product): void {
+    this.cartStore.dispatch(cartAction.incrementQuantity({ productId: product.id }));
   }
 
   removeFromCart(product: Product){

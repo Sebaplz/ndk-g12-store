@@ -20,15 +20,22 @@ export const cartReducer = createReducer(
     check: false,
   })),
 
-  on(cartAction.loadCartSuccess, (state, {cartProducts, total, blockedProducts}): CartStore => ({
-    ...state,
-    products: cartProducts,
-    total,
-    loading: false,
-    check: true,
-    error: null,
-    blockedProducts,
-  })),
+  on(cartAction.loadCartSuccess, (state, { cartProducts, total, blockedProducts }): CartStore => {
+    const recalculatedTotal = cartProducts.reduce(
+      (sum, product) => sum + product.price * product.quantity,
+      0
+    );
+
+    return {
+      ...state,
+      products: cartProducts,
+      total: recalculatedTotal,
+      loading: false,
+      check: true,
+      error: null,
+      blockedProducts,
+    };
+  }),
 
   on(cartAction.loadCartFail, (state, {error}): CartStore => ({
     ...state,
@@ -79,19 +86,21 @@ export const cartReducer = createReducer(
 
   on(cartAction.incrementQuantity, (state, { productId }): CartStore => {
     const updatedProducts = state.products.map(product =>
-      product.id === productId
+      product.id === productId && product.quantity < product.stock
         ? {
           ...product,
           quantity: product.quantity + 1,
-          subTotal: product.subTotal + product.price,
+          subTotal: product.price * (product.quantity + 1), // Actualiza el subtotal basado en la nueva cantidad
         }
         : product
     );
 
+    const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0); // Calcula el total basado en el subtotal de cada producto
+
     return {
       ...state,
       products: updatedProducts,
-      total: updatedProducts.reduce((sum, p) => sum + p.subTotal, 0),
+      total,
     };
   }),
 
@@ -101,15 +110,17 @@ export const cartReducer = createReducer(
         ? {
           ...product,
           quantity: product.quantity - 1,
-          subTotal: product.subTotal - product.price,
+          subTotal: product.price * (product.quantity - 1), // Actualiza el subtotal basado en la nueva cantidad
         }
         : product
     );
 
+    const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0); // Calcula el total basado en el subtotal de cada producto
+
     return {
       ...state,
       products: updatedProducts,
-      total: updatedProducts.reduce((sum, p) => sum + p.subTotal, 0),
+      total,
     };
   }),
 

@@ -7,8 +7,8 @@
     [sortOrder]="sortOrder"
     [layout]="'grid'"
     [paginator]="true"
-    [rows]="10"
-    [rowsPerPageOptions]="[10, 25, 50, 100]"
+    [rows]="9"
+    [rowsPerPageOptions]="[9, 25, 50, 100]"
     [showCurrentPageReport]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
   >
@@ -73,7 +73,7 @@
     </ng-template>
     <ng-template let-product pTemplate="grid" let-products>
       <div class="grid grid-nogutter">
-        <div class="col-12 sm:col-6 md:col-4 xl:col-6 p-2" *ngFor="let product of products">
+        <div class="col-12 sm:col-6 md:col-4 p-2" *ngFor="let product of products">
           <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
             <div class="surface-50 flex justify-content-center border-round p-3">
               <div class="relative mx-auto">

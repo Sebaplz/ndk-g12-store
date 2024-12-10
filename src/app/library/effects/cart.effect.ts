@@ -20,7 +20,14 @@ export class CartEffect {
           const cartProducts = this.cartService.getCartFromLocalStorage;
           if (cartProducts.length > 0) {
             const blockedProducts = cartProducts.map(product => product.id);
-            const total = cartProducts.reduce((sum, product) => sum + product.price, 0);
+
+            //TODO: Algo pasa con el total, porque no se calcula correctamente
+            // Recalcula correctamente el total basado en cantidades y precios
+            const total = cartProducts.reduce(
+              (sum, product) => sum + product.price * product.quantity,
+              0
+            );
+
             return of(cartAction.loadCartSuccess({ cartProducts, total, blockedProducts }));
           }
           return of(cartAction.loadCartFail({ error: 'No existe cart' }));
@@ -71,14 +78,23 @@ export class CartEffect {
         switchMap(({ productId }) => {
           const cartProducts = this.cartService.getCartFromLocalStorage;
           const updatedProducts = cartProducts.map(product =>
-            product.id === productId
-              ? { ...product, quantity: product.quantity + 1, subTotal: product.subTotal + product.price }
+            product.id === productId && product.quantity < product.stock
+              ? {
+                ...product,
+                quantity: product.quantity + 1,
+                subTotal: product.price * (product.quantity + 1), // Recalcula el subtotal
+              }
               : product
           );
 
           this.cartService.saveCart(updatedProducts);
-          return of(cartAction.saveCart({ cartProducts: updatedProducts, total: updatedProducts.length }));
-        })
+          const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0); // Recalcula el total
+
+          return of(cartAction.saveCart({ cartProducts: updatedProducts, total }));
+        }),
+        catchError(error =>
+          of(cartAction.loadCartFail({ error }))
+        )
       ),
     { functional: true }
   );
@@ -93,13 +109,13 @@ export class CartEffect {
               ? {
                 ...product,
                 quantity: product.quantity - 1,
-                subTotal: product.subTotal - product.price
+                subTotal: product.price * (product.quantity - 1), // Recalcula el subtotal
               }
               : product
           );
 
           this.cartService.saveCart(updatedProducts);
-          const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0);
+          const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0); // Recalcula el total
 
           return of(cartAction.saveCart({ cartProducts: updatedProducts, total }));
         }),
