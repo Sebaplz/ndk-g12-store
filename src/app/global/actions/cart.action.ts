@@ -17,5 +17,6 @@ export const cartAction = createActionGroup({
     'Increment Quantity': props<{ productId: number }>(),
     'Block Add Button': props<{ productId: number }>(),
 
+    'Remove Product': props<{ product: Product }>(),
   },
 });

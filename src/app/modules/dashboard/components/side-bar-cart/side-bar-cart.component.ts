@@ -7,6 +7,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import {ButtonDirective} from 'primeng/button';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
+import {cartAction} from '../../../../global/actions';
 
 @Component({
   selector: 'app-side-bar-cart',
@@ -39,7 +40,7 @@ export class SideBarCartComponent {
   }
 
   removeFromCart(product: Product){
-
+    this.cartStore.dispatch(cartAction.removeProduct({product}));
   }
 
   calculateTotal(products: CartProduct[]){

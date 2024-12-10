@@ -99,4 +99,15 @@ export const cartReducer = createReducer(
     ...state,
     blockedProducts: [...state.blockedProducts, productId],
   })),
+
+  on(cartAction.removeProduct, (state, { product }): CartStore => {
+    const updatedProducts = state.products.filter(p => p.id !== product.id);
+
+    return {
+      ...state,
+      products: updatedProducts,
+      total: updatedProducts.reduce((sum, p) => sum + p.subTotal, 0),
+      blockedProducts: state.blockedProducts.filter(id => id !== product.id),
+    };
+  }),
 );

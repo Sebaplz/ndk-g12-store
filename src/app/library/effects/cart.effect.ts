@@ -3,6 +3,8 @@ import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {cartAction} from '../../global/actions';
 import {exhaustMap, of, switchMap} from 'rxjs';
 import {CartService} from '../../global/services/cart.service';
+import {catchError, map} from 'rxjs/operators';
+import {Product} from '../../modules/dashboard/core/utils/interfaces';
 
 @Injectable()
 export class CartEffect {
@@ -77,6 +79,29 @@ export class CartEffect {
           this.cartService.saveCart(updatedProducts);
           return of(cartAction.saveCart({ cartProducts: updatedProducts, total: updatedProducts.length }));
         })
+      ),
+    { functional: true }
+  );
+
+  removeProduct$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(cartAction.removeProduct),
+        map((action) => action.product),
+        switchMap((product: Product) => {
+          const cartProducts = this.cartService.getCartFromLocalStorage;
+          const updatedProducts = cartProducts.filter(p => p.id !== product.id);
+
+          this.cartService.saveCart(updatedProducts);
+
+          const total = updatedProducts.reduce((sum, p) => sum + p.subTotal, 0);
+
+          return of(
+            cartAction.saveCart({ cartProducts: updatedProducts, total })
+          );
+        }),
+        catchError(error =>
+          of(cartAction.loadCartFail({ error }))
+        )
       ),
     { functional: true }
   );
