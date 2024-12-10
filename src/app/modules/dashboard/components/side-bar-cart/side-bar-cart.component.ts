@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {AuthStore, CartStore} from '../../../../resources/stores';
+import {AuthStore, CartStore, OrderStore} from '../../../../resources/stores';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {CartProduct, Product} from '../../core/utils/interfaces';
 import {TooltipModule} from 'primeng/tooltip';
@@ -8,6 +8,8 @@ import {ButtonDirective} from 'primeng/button';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
 import {cartAction} from '../../../../global/actions';
+import {environment} from '../../../../../environments/environment.development';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-side-bar-cart',
@@ -27,6 +29,9 @@ import {cartAction} from '../../../../global/actions';
 export class SideBarCartComponent {
   cartStore = inject(Store<{ cart: CartStore }>);
   authStore = inject(Store<{ auth: AuthStore }>);
+  orderStore = inject(Store<{ orders: OrderStore }>);
+  private readonly API_URL = environment.apiUrl;
+  private readonly http = inject(HttpClient);
   isLoggedIn$ = this.authStore.select(state => state.auth.isLoggedIn);
 
   products$ = this.cartStore.select(state => state.cart.products);
@@ -49,5 +54,23 @@ export class SideBarCartComponent {
       total += product.price * product.quantity;
     });
     return total;
+  }
+
+  checkout() {
+    this.products$.subscribe(products => {
+      const items = products.map((product: CartProduct) => ({
+        productId: product.id,
+        quantity: product.quantity
+      }));
+      this.http.post<any>(`${this.API_URL}/orders`, { items }).subscribe({
+        next: (response) => {
+          window.location.href = response.paymentSession.url;
+        },
+        error: (err) => {
+          console.error('Error al crear la orden:', err);
+          alert('Hubo un problema al procesar tu orden. Intenta nuevamente.');
+        }
+      });
+    });
   }
 }
