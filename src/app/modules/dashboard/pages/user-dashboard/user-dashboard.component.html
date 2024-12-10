@@ -1,5 +1,5 @@
 <app-navbar/>
-<div class="card w-9 mx-auto">
+<div class="card w-8 mx-auto">
   <p-dataView
     #dv
     [value]="products"
@@ -52,8 +52,18 @@
               <div class="flex flex-column md:align-items-end gap-5">
                 <span class="text-xl font-semibold text-900">{{ item.price |currency:'CLP':'symbol-narrow':'1.0-0' }} CLP</span>
                 <div class="flex flex-row-reverse md:flex-row gap-2">
-                  <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="Add to cart" [disabled]="item.stock === 0 || (isAdmin$ | async)"
-                  />
+                  <!--TODO: jajaja-->
+                  @if(isAdmin$ | async) {
+                  } @else {
+                    <p-button
+                      icon="pi pi-shopping-cart"
+                      class="flex-auto md:flex-initial white-space-nowrap"
+                      [label]="isProductBlocked(item.id) ? 'Already in cart' : 'Add to cart'"
+                      [disabled]="item.stock === 0 || isProductBlocked(item.id)"
+                      (onClick)="addProductToCart(item)"
+                    >
+                    </p-button>
+                  }
                 </div>
               </div>
             </div>
@@ -81,13 +91,18 @@
               <div class="flex flex-column gap-4 mt-4">
                 <span class="text-2xl font-semibold">{{ product.price |currency:'CLP':'symbol-narrow':'1.0-0' }} CLP</span>
                 <div class="flex gap-2">
-                  <p-button
-                    icon="pi pi-shopping-cart"
-                    class="flex-auto md:flex-initial white-space-nowrap"
-                    label="Add to cart"
-                    [disabled]="product.stock === 0 || (isAdmin$ | async)"
-                  >
-                  </p-button>
+                  <!--TODO: jajaja-->
+                  @if(isAdmin$ | async) {
+                  } @else {
+                    <p-button
+                      icon="pi pi-shopping-cart"
+                      class="flex-auto md:flex-initial white-space-nowrap"
+                      [label]="isProductBlocked(product.id) ? 'Already in cart' : 'Add to cart'"
+                      [disabled]="product.stock === 0 || isProductBlocked(product.id)"
+                      (onClick)="addProductToCart(product)"
+                    >
+                    </p-button>
+                  }
                 </div>
               </div>
             </div>
@@ -97,3 +112,4 @@
     </ng-template>
   </p-dataView>
 </div>
+<app-side-bar-cart *ngIf="!(isAdmin$ | async)"></app-side-bar-cart>

@@ -3,9 +3,10 @@ import {MenuModule} from 'primeng/menu';
 import {Button} from 'primeng/button';
 import {TabMenuModule} from 'primeng/tabmenu';
 import {AsyncPipe} from "@angular/common";
-import {AuthStore} from '../../../resources/stores';
+import {AuthStore, CartStore} from '../../../resources/stores';
 import {Store} from '@ngrx/store';
-import {authAction} from '../../actions/auth.action';
+import {authAction} from '../../actions';
+import {BadgeModule} from 'primeng/badge';
 
 @Component({
   selector: 'app-navbar',
@@ -15,12 +16,15 @@ import {authAction} from '../../actions/auth.action';
     Button,
     TabMenuModule,
     AsyncPipe,
+    BadgeModule,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent{
   authStore = inject(Store<{ auth: AuthStore }>);
+  cartStore = inject(Store<{ cart: CartStore }>);
+  totalItems$ = this.cartStore.select(state => state.cart.products.length);
   email$ = this.authStore.select(state => state.auth.email);
   isAdmin$ = this.authStore.select(state => state.auth.isAdmin);
   isLoggedIn$ = this.authStore.select(state => state.auth.isLoggedIn);

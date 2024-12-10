@@ -1,18 +1,20 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
-import {AsyncPipe, CurrencyPipe, NgClass, NgForOf} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {DataViewModule} from 'primeng/dataview';
 import {PrimeTemplate, SelectItem} from 'primeng/api';
 import {TagModule} from 'primeng/tag';
 import {Product} from '../../core/utils/interfaces';
-import {ProductsStore} from '../../../../resources/stores/products.store';
 import {Store} from '@ngrx/store';
-import {productsReaction} from '../../../../library/reactions/products.reaction';
 import {DropdownModule} from 'primeng/dropdown';
 import {FormsModule} from '@angular/forms';
 import {NavbarComponent} from '../../../../global/components/navbar/navbar.component';
-import {AuthStore} from '../../../../resources/stores/auth.store';
+
 import {Observable} from 'rxjs';
+import {AuthStore, CartStore, ProductsStore} from '../../../../resources/stores';
+import {productsReaction} from '../../../../library/reactions';
+import {cartAction} from '../../../../global/actions';
+import {SideBarCartComponent} from '../../components/side-bar-cart/side-bar-cart.component';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -28,7 +30,9 @@ import {Observable} from 'rxjs';
     DropdownModule,
     FormsModule,
     NavbarComponent,
-    AsyncPipe
+    AsyncPipe,
+    SideBarCartComponent,
+    NgIf
   ],
   templateUrl: './user-dashboard.component.html',
   styleUrl: './user-dashboard.component.scss'
@@ -36,7 +40,9 @@ import {Observable} from 'rxjs';
 export class UserDashboardComponent implements OnInit {
   productsStore = inject(Store<{ products: ProductsStore }>);
   authStore = inject(Store<{ auth: AuthStore }>);
+  cartStore = inject(Store<{ cart: CartStore }>);
   isAdmin$: Observable<boolean> = this.authStore.select(state => state.auth.isAdmin);
+  blockedProducts$ = this.cartStore.select(state => state.cart.blockedProducts);
 
   originalProducts: Product[] = [];
   products: Product[] = [];
@@ -63,6 +69,7 @@ export class UserDashboardComponent implements OnInit {
     ];
   }
 
+  //TODO: Esta bien suscribirme a la store?
   loadProducts(page: number = 1, rows: number = 100) {
     this.productsStore.dispatch(productsReaction.load({page, limit: rows}));
     this.productsStore.select(state => state.products).subscribe(products => {
@@ -112,5 +119,17 @@ export class UserDashboardComponent implements OnInit {
     } else {
       this.products = [...this.originalProducts];
     }
+  }
+
+  addProductToCart(product: Product) {
+    this.cartStore.dispatch(cartAction.addProduct({ product }));
+  }
+
+  isProductBlocked(productId: number): boolean {
+    let isBlocked = false;
+    this.blockedProducts$.subscribe(blockedProducts => {
+      isBlocked = blockedProducts.includes(productId);
+    });
+    return isBlocked;
   }
 }

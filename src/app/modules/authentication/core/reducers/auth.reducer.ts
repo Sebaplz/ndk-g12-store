@@ -1,7 +1,7 @@
-import {AuthStore} from '../../../../resources/stores/auth.store';
+import {AuthStore} from '../../../../resources/stores';
 import {createReducer, on} from '@ngrx/store';
-import {authReaction} from '../../../../library/reactions/auth.reaction';
-import {authAction} from '../../../../global/actions/auth.action';
+import {authReaction} from '../../../../library/reactions';
+import {authAction} from '../../../../global/actions';
 
 
 export const authInitialState: AuthStore = {

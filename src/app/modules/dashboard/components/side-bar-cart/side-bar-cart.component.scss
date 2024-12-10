@@ -1,0 +1,23 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 22rem;
+  height: 100%;
+  overflow-y: auto;
+  background-color: var(--surface-card);
+  box-shadow: var(--shadow-2);
+}
+
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.product-image {
+  width: 8rem;
+  height: 8rem;
+  object-fit: contain;
+}

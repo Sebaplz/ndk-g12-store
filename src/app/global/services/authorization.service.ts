@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { AuthStore } from '../../resources/stores/auth.store';
+import { AuthStore } from '../../resources/stores';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { filter, Observable } from 'rxjs';

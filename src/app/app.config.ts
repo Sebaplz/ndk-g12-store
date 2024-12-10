@@ -8,10 +8,10 @@ import {provideStoreDevtools} from '@ngrx/store-devtools';
 import {provideStore} from "@ngrx/store";
 import {authReducer} from "./modules/authentication/core/reducers/auth.reducer";
 import {provideEffects} from "@ngrx/effects";
-import {AuthEffect, OrderEffect, ProductEffect} from './library/effects';
+import {AuthEffect, CartEffect, OrderEffect, ProductEffect} from './library/effects';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {authInterceptor} from './library/interceptors/auth.interceptor';
-import {ordersReducer, productReducer} from './modules/dashboard/core/reducers';
+import {cartReducer, ordersReducer, productReducer} from './modules/dashboard/core/reducers';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,9 +20,10 @@ export const appConfig: ApplicationConfig = {
       auth: authReducer,
       products: productReducer,
       orders: ordersReducer,
+      cart: cartReducer,
     }),
       provideEffects([
-          AuthEffect, ProductEffect, OrderEffect
+          AuthEffect, ProductEffect, OrderEffect, CartEffect
       ]),
     provideAnimations(),
     provideRouter(routes),

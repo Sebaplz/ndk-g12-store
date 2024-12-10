@@ -1,12 +1,12 @@
 import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {authAction} from '../../global/actions/auth.action';
+import {authAction} from '../../global/actions';
 import {exhaustMap, of, Subject, tap} from 'rxjs';
 import {AuthorizationService} from '../../global/services/authorization.service';
 import {catchError, map, mergeMap} from 'rxjs/operators';
 import {environment} from '../../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
-import {authReaction} from '../reactions/auth.reaction';
+import {authReaction} from '../reactions';
 import {Router} from '@angular/router';
 import {jwtDecode, JwtPayload} from 'jwt-decode';
 
