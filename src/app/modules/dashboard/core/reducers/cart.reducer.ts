@@ -1,7 +1,7 @@
 import {CartProduct} from '../utils/interfaces';
 import {createReducer, on} from '@ngrx/store';
-import {cartAction} from '../../../../global/actions';
 import {CartStore} from '../../../../resources/stores';
+import {cartAction} from '../../../../global/actions/cart.action';
 
 export const cartInitialState = {
   products: [] as CartProduct[],

@@ -8,12 +8,12 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {Ripple} from 'primeng/ripple';
 import {Router, RouterLink} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AuthStore} from '../../../../resources/stores/auth.store';
-import {authReaction} from '../../../../library/reactions/auth.reaction';
-import {UserCredentials} from '../../core/utils/interfaces/UserCredentials.interface';
+import {AuthStore} from '../../../../resources/stores';
+import {authReaction} from '../../../../library/reactions';
 import {filter} from 'rxjs';
 import {NgIf} from '@angular/common';
 import {AuthEffect} from '../../../../library/effects';
+import {LoginRequest} from '../../../../resources/io/auth/login.in';
 
 @Component({
   selector: 'login-page',
@@ -53,7 +53,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const {email, password} = this.loginForm.value as UserCredentials;
+    const {email, password} = this.loginForm.value as LoginRequest;
     this.authStore.dispatch(authReaction.login({email, password}));
     this.authStore
       .select((state) => state.auth)

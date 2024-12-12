@@ -5,8 +5,8 @@ import {TabMenuModule} from 'primeng/tabmenu';
 import {AsyncPipe} from "@angular/common";
 import {AuthStore, CartStore} from '../../../resources/stores';
 import {Store} from '@ngrx/store';
-import {authAction} from '../../actions';
 import {BadgeModule} from 'primeng/badge';
+import {authAction} from '../../actions/auth.action';
 
 @Component({
   selector: 'app-navbar',
