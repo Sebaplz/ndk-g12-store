@@ -38,4 +38,10 @@ export interface AuthStore {
    * Indica si el usuario esta autenticado o no
    */
   isLoggedIn: boolean;
+
+  /**
+   * error
+   * Error que puede ocurrir durante la autenticación
+   */
+  error: string | null;
 }
