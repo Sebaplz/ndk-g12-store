@@ -13,8 +13,8 @@ import {NavbarComponent} from '../../../../global/components/navbar/navbar.compo
 import {Observable} from 'rxjs';
 import {AuthStore, CartStore, ProductsStore} from '../../../../resources/stores';
 import {productsReaction} from '../../../../library/reactions';
-import {cartAction} from '../../../../global/actions';
 import {SideBarCartComponent} from '../../components/side-bar-cart/side-bar-cart.component';
+import {cartAction} from '../../../../global/actions/cart.action';
 
 @Component({
   selector: 'app-user-dashboard',

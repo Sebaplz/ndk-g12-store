@@ -2,7 +2,8 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Router, RouterOutlet} from '@angular/router';
 import {AuthStore, CartStore} from './resources/stores';
 import {Store} from '@ngrx/store';
-import {authAction, cartAction} from './global/actions';
+import {authAction} from './global/actions/auth.action';
+import {cartAction} from './global/actions/cart.action';
 
 @Component({
   selector: 'app-root',

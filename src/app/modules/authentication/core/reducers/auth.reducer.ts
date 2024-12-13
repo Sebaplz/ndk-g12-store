@@ -1,8 +1,7 @@
 import {AuthStore} from '../../../../resources/stores';
 import {createReducer, on} from '@ngrx/store';
 import {authReaction} from '../../../../library/reactions';
-import {authAction} from '../../../../global/actions';
-
+import {authAction} from '../../../../global/actions/auth.action';
 
 export const authInitialState: AuthStore = {
   loading: true,
@@ -11,6 +10,7 @@ export const authInitialState: AuthStore = {
   isAdmin: false,
   email: null,
   isLoggedIn: false,
+  error: null,
 }
 
 export const authReducer = createReducer(
@@ -23,8 +23,8 @@ export const authReducer = createReducer(
       ({ ...state, loading: false, email, token, check: true, isAdmin, isLoggedIn: true})),
 
   on(authReaction.loginFail,
-    (state): AuthStore =>
-      ({ ...state, loading: false, check: true, isAdmin: false, email: null, isLoggedIn: false })),
+    (state, { error }): AuthStore =>
+      ({ ...state, loading: false, check: true, isAdmin: false, email: null, isLoggedIn: false, error })),
 
   on(authAction.loadToken,
     (): AuthStore =>
@@ -42,4 +42,20 @@ export const authReducer = createReducer(
     (): AuthStore =>
       (authInitialState)),
 
+  on(authReaction.register,
+    (): AuthStore =>
+      (authInitialState)),
+
+  on(authReaction.registerSuccess,
+    (state): AuthStore =>
+      ({ ...state, loading: false, check: true })),
+
+  on(authReaction.registerFail,
+    (state, { error }): AuthStore =>
+      ({ ...state, loading: false, check: true, error })),
+
+  on(authAction.clearError, (state) => ({
+    ...state,
+    error: null,
+  })),
 );

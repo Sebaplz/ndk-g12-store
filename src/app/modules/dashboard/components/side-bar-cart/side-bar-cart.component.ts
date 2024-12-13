@@ -7,9 +7,9 @@ import {TooltipModule} from 'primeng/tooltip';
 import {ButtonDirective} from 'primeng/button';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
-import {cartAction} from '../../../../global/actions';
 import {environment} from '../../../../../environments/environment.development';
 import {HttpClient} from '@angular/common/http';
+import {cartAction} from '../../../../global/actions/cart.action';
 
 @Component({
   selector: 'app-side-bar-cart',

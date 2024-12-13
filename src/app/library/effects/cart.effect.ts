@@ -1,10 +1,10 @@
 import {inject, Injectable} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
-import {cartAction} from '../../global/actions';
 import {exhaustMap, of, switchMap} from 'rxjs';
 import {CartService} from '../../global/services/cart.service';
 import {catchError, map} from 'rxjs/operators';
 import {Product} from '../../modules/dashboard/core/utils/interfaces';
+import {cartAction} from '../../global/actions/cart.action';
 
 @Injectable()
 export class CartEffect {
