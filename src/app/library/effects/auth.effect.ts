@@ -9,6 +9,8 @@ import {authReaction} from '../reactions';
 import {Router} from '@angular/router';
 import {jwtDecode, JwtPayload} from 'jwt-decode';
 import {authAction} from '../../global/actions/auth.action';
+import {RegisterResponse} from '../../resources/io/auth/register.out';
+import {LoginResponse} from '../../resources/io/auth/login.out';
 
 @Injectable()
 export class AuthEffect {
@@ -47,38 +49,53 @@ export class AuthEffect {
   );
 
   login$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authReaction.login),
-      mergeMap(action =>
-        this.http.post<any>(`${this.API_URL}/auth/login`, {
-          email: action.email,
-          password: action.password
-        }).pipe(
-          map(response => {
-            this.authorizationService.saveToken(response.token);
-            if(action.email === 'admin@admin.com') {
+      this.actions$.pipe(
+        ofType(authReaction.login),
+        mergeMap(action =>
+          this.http.post<LoginResponse>(`${this.API_URL}/auth/login`, {
+            email: action.email,
+            password: action.password
+          }).pipe(
+            map(response => {
+              this.authorizationService.saveToken(response.token);
+              if(action.email === 'admin@admin.com') {
+                return authReaction.loginSuccess({
+                  token: response.token,
+                  isAdmin: true,
+                  email: action.email,
+                });
+              }
+
               return authReaction.loginSuccess({
                 token: response.token,
-                isAdmin: true,
+                isAdmin: false,
                 email: action.email,
               });
-            }
-
-            return authReaction.loginSuccess({
-              token: response.token,
-              isAdmin: false,
-              email: action.email,
-            });
-          }),
-          catchError(err => {
-            const errorMessage = err.error?.message || 'An unexpected error occurred';
-            this.loginError$.next(errorMessage);
-            return of(authReaction.loginFail({ error: errorMessage }));
-          })
+            }),
+            catchError(err => {
+              console.log(err)
+              const errorMessage = err.error?.message || 'An unexpected error occurred';
+              /*this.loginError$.next(errorMessage);*/
+              return of(authReaction.loginFail({ error: errorMessage }));
+            })
+          )
         )
-      )
-    ),
+      ),
     { functional: true }
+  );
+
+  loginRedirect$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(authReaction.loginSuccess),
+        tap(({ isAdmin }) => {
+          if (isAdmin) {
+            this.router.navigate(['/dashboard/admin']);
+          } else {
+            this.router.navigate(['/dashboard/user']);
+          }
+        })
+      ),
+    { dispatch: false }
   );
 
   logout$ = createEffect(() =>
@@ -90,5 +107,42 @@ export class AuthEffect {
         })
       ),
     { dispatch: false, functional: true }
+  );
+
+  register$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(authReaction.register),
+        mergeMap((action) =>
+          this.http.post<RegisterResponse>(`${this.API_URL}/auth/register`, {
+            email: action.email,
+            password: action.password
+          }, { responseType: 'text' as 'json' }).pipe(
+            map(() => {
+              return authReaction.login({
+                email: action.email,
+                password: action.password
+              });
+            }),
+            catchError(err => {
+              if(err.status === 409) {
+                const errorMessage = "User with this email already exists";
+                return of(authReaction.registerFail({ error: errorMessage }));
+              }
+              return of(authReaction.registerFail({ error: 'An unexpected error occurred' }));
+            })
+          )
+        )
+      ),
+    { functional: true }
+  );
+
+  clearError$ = createEffect(()=>
+    this.actions$.pipe(
+      ofType(authAction.clearError),
+      tap(()=>{
+        console.log("Se limpio el error")
+      })
+    ),
+    { dispatch: false }
   );
 }
