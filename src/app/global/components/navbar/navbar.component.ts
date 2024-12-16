@@ -7,6 +7,7 @@ import {AuthStore, CartStore} from '../../../resources/stores';
 import {Store} from '@ngrx/store';
 import {BadgeModule} from 'primeng/badge';
 import {authAction} from '../../actions/auth.action';
+import {cartAction} from '../../actions/cart.action';
 
 @Component({
   selector: 'app-navbar',
@@ -31,5 +32,9 @@ export class NavbarComponent{
 
   logout() {
     this.authStore.dispatch(authAction.logout());
+  }
+
+  toggleCart() {
+    this.cartStore.dispatch(cartAction.toggleCart());
   }
 }

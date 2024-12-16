@@ -19,5 +19,7 @@ export const cartAction = createActionGroup({
     'Block Add Button': props<{ productId: number }>(),
 
     'Remove Product': props<{ product: Product }>(),
+
+    'Toggle Cart': emptyProps(),
   },
 });

@@ -4,7 +4,7 @@ import {AuthStore, CartStore, OrderStore} from '../../../../resources/stores';
 import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
 import {CartProduct, Product} from '../../core/utils/interfaces';
 import {TooltipModule} from 'primeng/tooltip';
-import {ButtonDirective} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {DividerModule} from 'primeng/divider';
 import {BadgeModule} from 'primeng/badge';
 import {environment} from '../../../../../environments/environment.development';
@@ -21,7 +21,8 @@ import {cartAction} from '../../../../global/actions/cart.action';
     TooltipModule,
     ButtonDirective,
     DividerModule,
-    BadgeModule
+    BadgeModule,
+    Button
   ],
   templateUrl: './side-bar-cart.component.html',
   styleUrl: './side-bar-cart.component.scss'
@@ -35,6 +36,8 @@ export class SideBarCartComponent {
   isLoggedIn$ = this.authStore.select(state => state.auth.isLoggedIn);
 
   products$ = this.cartStore.select(state => state.cart.products);
+
+  totalItems$ = this.cartStore.select(state => state.cart.products.length);
 
   decreaseQuantity(product: Product): void {
     this.cartStore.dispatch(cartAction.decrementQuantity({ productId: product.id }));
@@ -72,5 +75,9 @@ export class SideBarCartComponent {
         }
       });
     });
+  }
+
+  toggleCart() {
+    this.cartStore.dispatch(cartAction.toggleCart());
   }
 }
