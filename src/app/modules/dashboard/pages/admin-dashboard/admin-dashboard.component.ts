@@ -14,8 +14,6 @@ import {productsReaction} from '../../../../library/reactions/products.reaction'
 import {Product} from '../../core/utils/interfaces';
 import {DropdownModule} from 'primeng/dropdown';
 import {FormsModule} from '@angular/forms';
-import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ToastModule} from 'primeng/toast';
 import {OrdersComponent} from '../../components/orders/orders.component';
 import {AddEditProductComponent} from '../../components/add-edit-product/add-edit-product.component';
 
@@ -34,8 +32,6 @@ import {AddEditProductComponent} from '../../components/add-edit-product/add-edi
     TagModule,
     DropdownModule,
     FormsModule,
-    ConfirmDialogModule,
-    ToastModule,
     OrdersComponent,
     AddEditProductComponent
   ],
