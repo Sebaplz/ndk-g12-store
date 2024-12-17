@@ -3,7 +3,7 @@ import {authGuard} from './global/guards';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     loadChildren: () =>
       import('./modules/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
@@ -14,5 +14,10 @@ export const routes: Routes = [
         (m) => m.AuthenticationModule
       ),
     canActivate: [authGuard],
+  },
+  {
+    path: '**',
+    redirectTo: '/dashboard',
+    pathMatch: 'full',
   }
 ];
