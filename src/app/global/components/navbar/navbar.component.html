@@ -3,14 +3,14 @@
   <nav>
     <ul class="flex flex-wrap justify-content-center gap-4 list-none">
       @if(isLoggedIn$ | async) {
-        <li><p>Welcome, <span class="font-bold">{{ email$ | async }}</span></p></li>
+        <li class="hidden lg:block"><p>Welcome, <span class="font-bold">{{ email$ | async }}</span></p></li>
         @if(isAdmin$ | async) {
           <li>
             <p-button routerLink="/dashboard/admin" icon="pi pi-cog" severity="primary" label="Admin"></p-button>
           </li>
         } @else {
           <li>
-            <p-button severity="success" outlined>
+            <p-button severity="success" outlined (click)="toggleCart()">
               <!--TODO: Arreglar posible null? -->
             <i class="pi pi-shopping-cart text-xl" pBadge [value]="totalItems$ | async"></i>
             </p-button>

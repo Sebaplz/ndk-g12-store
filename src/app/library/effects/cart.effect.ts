@@ -5,11 +5,13 @@ import {CartService} from '../../global/services/cart.service';
 import {catchError, map} from 'rxjs/operators';
 import {Product} from '../../modules/dashboard/core/utils/interfaces';
 import {cartAction} from '../../global/actions/cart.action';
+import {MessageService} from 'primeng/api';
 
 @Injectable()
 export class CartEffect {
   private readonly actions$ = inject(Actions);
   private readonly cartService = inject(CartService);
+  private readonly messageService = inject(MessageService);
 
   constructor() {}
 
@@ -147,5 +149,40 @@ export class CartEffect {
         )
       ),
     { functional: true }
+  );
+
+  toggleCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(cartAction.toggleCart),
+    ),
+    { dispatch: false }
+  );
+
+  addProductFeedback$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(cartAction.addProductSuccess),
+        map(action => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Add Product to Cart Success',
+            detail: `Product "${action.product.name}" added successfully to the cart.`,
+          });
+        })
+      ),
+    { dispatch: false }
+  );
+
+  removeProductFeedback$ = createEffect(() =>
+      this.actions$.pipe(
+        ofType(cartAction.removeProduct),
+        map(action => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Remove Product from Cart Success',
+            detail: `Product "${action.product.name}" removed successfully from the cart.`,
+          });
+        })
+      ),
+    { dispatch: false }
   );
 }

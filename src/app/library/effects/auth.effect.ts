@@ -11,6 +11,7 @@ import {jwtDecode, JwtPayload} from 'jwt-decode';
 import {authAction} from '../../global/actions/auth.action';
 import {RegisterResponse} from '../../resources/io/auth/register.out';
 import {LoginResponse} from '../../resources/io/auth/login.out';
+import {MessageService} from 'primeng/api';
 
 @Injectable()
 export class AuthEffect {
@@ -21,6 +22,7 @@ export class AuthEffect {
   private readonly http = inject(HttpClient);
   public loginError$ = new Subject<string>();
   private readonly router = inject(Router);
+  private readonly messageService = inject(MessageService);
 
   constructor() {}
 
@@ -104,6 +106,11 @@ export class AuthEffect {
         tap(() => {
           this.authorizationService.logout();
           this.router.navigate(['/auth/login']);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Logout Success',
+            detail: 'You have been logged out successfully.',
+          });
         })
       ),
     { dispatch: false, functional: true }

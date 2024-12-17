@@ -43,6 +43,7 @@ export class UserDashboardComponent implements OnInit {
   cartStore = inject(Store<{ cart: CartStore }>);
   isAdmin$: Observable<boolean> = this.authStore.select(state => state.auth.isAdmin);
   blockedProducts$ = this.cartStore.select(state => state.cart.blockedProducts);
+  isCartOpen$: Observable<boolean> = this.cartStore.select(state => state.cart.isCartOpen);
 
   originalProducts: Product[] = [];
   products: Product[] = [];

@@ -21,3 +21,9 @@
   height: 8rem;
   object-fit: contain;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+  }
+}
