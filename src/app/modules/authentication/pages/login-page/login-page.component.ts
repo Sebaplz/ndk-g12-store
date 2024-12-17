@@ -12,6 +12,7 @@ import {authReaction} from '../../../../library/reactions';
 import {NgIf} from '@angular/common';
 import {LoginRequest} from '../../../../resources/io/auth/login.in';
 import {authAction} from '../../../../global/actions/auth.action';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'login-page',
@@ -24,7 +25,8 @@ import {authAction} from '../../../../global/actions/auth.action';
     CheckboxModule,
     ButtonDirective,
     Ripple,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.scss'
