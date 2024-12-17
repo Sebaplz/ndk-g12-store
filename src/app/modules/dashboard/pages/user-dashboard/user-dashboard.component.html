@@ -1,5 +1,5 @@
 <app-navbar/>
-<div class="card w-8 mx-auto">
+<div class="card lg:w-8 w-full mx-auto">
   <p-dataView
     #dv
     [value]="products"
@@ -14,7 +14,7 @@
   >
     <ng-template pTemplate="header">
       <div class="flex flex-column md:flex-row md:justify-content-between">
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
           <p-dropdown
             [options]="sortOptions"
             [(ngModel)]="sortKey"
@@ -112,4 +112,4 @@
     </ng-template>
   </p-dataView>
 </div>
-<app-side-bar-cart *ngIf="!(isAdmin$ | async)"></app-side-bar-cart>
+<app-side-bar-cart *ngIf="!(isAdmin$ | async) && (isCartOpen$ | async)"></app-side-bar-cart>

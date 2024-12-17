@@ -36,4 +36,10 @@ export interface CartStore {
    * Productos bloqueados en el carrito
    */
   blockedProducts: number[];
+
+  /**
+   * isCartOpen
+   * Indica si el carrito está abierto
+   */
+  isCartOpen: boolean;
 }

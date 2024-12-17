@@ -10,6 +10,7 @@ export const cartInitialState = {
   check: false,
   error: null,
   blockedProducts: [] as number[],
+  isCartOpen: false,
 };
 
 export const cartReducer = createReducer(
@@ -139,4 +140,9 @@ export const cartReducer = createReducer(
       blockedProducts: state.blockedProducts.filter(id => id !== product.id),
     };
   }),
+
+  on(cartAction.toggleCart, (state): CartStore => ({
+    ...state,
+    isCartOpen: !state.isCartOpen,
+  })),
 );
