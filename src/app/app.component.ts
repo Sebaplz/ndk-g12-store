@@ -4,13 +4,17 @@ import {AuthStore, CartStore} from './resources/stores';
 import {Store} from '@ngrx/store';
 import {authAction} from './global/actions/auth.action';
 import {cartAction} from './global/actions/cart.action';
+import {ToastModule} from 'primeng/toast';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastModule, ConfirmDialogModule],
   template: `
     <router-outlet></router-outlet>
+    <p-toast></p-toast>
+    <p-confirmDialog></p-confirmDialog>
   `,
 })
 export class AppComponent implements OnInit {
